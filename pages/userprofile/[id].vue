@@ -1,7 +1,14 @@
 <template>
   <div>user Details</div>
-  <h1>{{ params.id }}</h1>
+  {{ data }}
 </template>
 <script setup lang="ts">
-const { params } = useRoute();
+const id = useRoute().params.id;
+
+const { data } = await useAsyncGql({
+  operation: "getUser",
+  variables: {
+    id: id,
+  },
+});
 </script>
