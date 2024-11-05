@@ -5,7 +5,7 @@
       <h5 class="text-[16px] font-normal text-[#475467]">Users</h5>
     </div>
 
-    <div>
+    <div class="space-x-3">
       <el-button
         class="shadow-md"
         style="color: #344054; width: 122px; height: 40px"
@@ -13,17 +13,19 @@
         >Export</el-button
       >
 
-      <el-button
-        style="
-          border: none;
-          width: 122px;
-          height: 40px;
-          color: white;
-          background: linear-gradient(to right, #ef3e2c, #e71f63);
-        "
-        :icon="Plus"
-        >Add user</el-button
-      >
+      <nuxt-link :to="'/adduser'">
+        <el-button
+          style="
+            border: none;
+            width: 122px;
+            height: 40px;
+            color: white;
+            background: linear-gradient(to right, #ef3e2c, #e71f63);
+          "
+          :icon="Plus"
+          >Add user</el-button
+        >
+      </nuxt-link>
     </div>
   </div>
   <div class="px-5 space-x-6 border-b-[1px]">

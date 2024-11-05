@@ -1,5 +1,5 @@
 <template>
-  <div class="container-lg mx-auto">
+  <div class="md:container-lg mx-auto">
     <div class="grid md:grid-cols-2 grid-cols-1 md:min-h-screen">
       <div
         class="col-span-1 flex items-center h-[50vh] md:h-full justify-center shadow-md bg-gradient-to-r from-[#EF3E2c] to-[#E71F63]"
@@ -9,39 +9,47 @@
         ></div>
       </div>
 
-      <div class="col-span-1 flex justify-center items-center md:p-0 p-12">
-        <AuthLoginComponent />
-        <!-- <AuthSignUp /> -->
+      <div
+        class="col-span-1 flex flex-col space-y-6 justify-center items-center md:p-0 py-4"
+      >
+        <AuthSignUp v-if="toggelForm" />
+        <AuthLoginComponent v-else />
+        <div>
+          <p
+            v-if="toggelForm"
+            class="text-[14px] font-medium leading-5 text-center w-full"
+          >
+            Already have an account?
+            <button @click="toggleForm" class="text-[#EF3E2C] cursor-pointer">
+              login
+            </button>
+          </p>
+          <p
+            v-else
+            class="text-[14px] font-medium leading-5 text-center w-full"
+          >
+            Create an account?
+            <span @click="toggleForm" class="text-[#EF3E2C] cursor-pointer"
+              >signup</span
+            >
+          </p>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
+import { ref } from "vue";
 
 definePageMeta({
   layout: "login-layout",
 });
-const FormData = reactive({
-  name: "",
-  email: "",
-  password: "",
-});
 
-const login = reactive({
-  SignUp: "Sign Up",
-});
+const toggelForm = ref(true);
 
-const Registion = () => {
-  login.SignUp = login.SignUp === "Sign Up" ? "Log In" : "Sign Up";
-};
-const onSubmit = () => {
-  console.log("tesing");
-
-  console.log(FormData);
-
-  navigateTo("/");
+const toggleForm = () => {
+  toggelForm.value = !toggelForm.value;
 };
 </script>
 

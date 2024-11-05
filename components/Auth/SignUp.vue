@@ -1,77 +1,101 @@
 <template>
   <div class="space-y-9">
     <h1 class="font-bold text-xl leading-6">Sign Up for an Account</h1>
-    <el-form class="flex flex-col gap-9">
-      <el-input
-        v-model="FormData.name"
-        style="width: 404px; height: 56px"
-        size="large"
-        type="text"
-        placeholder="Username"
-        :prefix-icon="User"
-      />
+    <el-form ref="signupForm" label-position="top" class="flex flex-col gap-9">
+      <!-- Username Field -->
+      <el-form-item :error="errors.name">
+        <Field name="name" v-slot="{ field }">
+          <el-input
+            v-bind="field"
+            style="width: 404px; height: 56px"
+            size="large"
+            type="text"
+            placeholder="Username"
+            :prefix-icon="User"
+          />
+        </Field>
+      </el-form-item>
 
-      <el-input
-        v-model="FormData.email"
-        style="width: 404px; height: 56px"
-        size="large"
-        type="email"
-        placeholder="Email"
-        :prefix-icon="Message"
-      />
-      <el-input
-        v-model="FormData.password"
-        style="width: 404px; height: 56px"
-        size="large"
-        type="password"
-        placeholder="Password"
-        :prefix-icon="Lock"
-        show-password
-      />
+      <!-- Email Field -->
+      <el-form-item :error="errors.email">
+        <Field name="email" v-slot="{ field }">
+          <el-input
+            v-bind="field"
+            style="width: 404px; height: 56px"
+            size="large"
+            type="email"
+            placeholder="Email"
+            :prefix-icon="Message"
+          />
+        </Field>
+      </el-form-item>
+
+      <!-- Password Field -->
+      <el-form-item :error="errors.password">
+        <Field name="password" v-slot="{ field }">
+          <el-input
+            v-bind="field"
+            style="width: 404px; height: 56px"
+            size="large"
+            type="password"
+            placeholder="Password"
+            :prefix-icon="Lock"
+            show-password
+          />
+        </Field>
+      </el-form-item>
+
       <div class="w-[340px] flex items-center h-9 gap-x-3">
         <el-checkbox size="large" />
         <p class="text-xs">
-          By creating an account means you agree to the Terms & Conditions and
-          our Privacy Policy
+          By creating an account, you agree to the Terms & Conditions and our
+          Privacy Policy.
         </p>
       </div>
-      <el-button style="height: 56px; border-radius: 100px" type="primary"
-        >Sign Up</el-button
+
+      <el-button
+        style="
+          height: 56px;
+          border-radius: 100px;
+          color: white;
+          background: linear-gradient(to right, #ef3e2c, #e71f63);
+        "
+        @click="submitForm"
       >
-      <p class="text-[14px] font-medium leading-5 text-center w-full">
-        Already have an account?
-        <span class="text-[#EF3E2C] cursor-pointer">Log In</span>
-      </p>
+        Sign Up
+      </el-button>
     </el-form>
   </div>
 </template>
-
 <script setup lang="ts">
-import type { FormInstance } from "element-plus";
+import * as yup from "yup";
+import { useForm, Field, useField } from "vee-validate";
 import { Message, User, Lock } from "@element-plus/icons-vue";
 
-interface TForm {
-  name: string;
-  email: string;
-  password: string;
-}
-
-const FormData = ref<TForm>({
-  name: "",
-  email: "",
-  password: "",
+// Define validation schema using Yup
+const schema = yup.object({
+  name: yup.string().required("Username is required"),
+  email: yup
+    .string()
+    .email("Invalid email format")
+    .required("Email is required"),
+  password: yup
+    .string()
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
 });
 
-const submitForm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return;
-  formEl.validate((valid) => {
-    if (valid) {
-      console.log("submit!");
-    } else {
-      console.log("error submit!");
-    }
-  });
-};
-</script>
+// Initialize form with VeeValidate's useForm hook
+const { handleSubmit, errors } = useForm({
+  validationSchema: schema,
+});
 
-<style scoped></style>
+// Form submission handler
+const submitForm = handleSubmit((values) => {
+  if (values) {
+    console.log("Form Data:", values);
+    navigateTo("/");
+  }
+  // This will log the form data if valid
+});
+</script>

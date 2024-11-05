@@ -14,8 +14,10 @@
     "@element-plus/nuxt": "^1.1.0",
     "@nuxt/icon": "^1.6.1",
     "@nuxtjs/tailwindcss": "^6.12.2",
+    "@vee-validate/nuxt": "^4.14.6",
     "nuxt": "^3.13.2",
     "nuxt-graphql-client": "^0.2.36",
+    "vee-validate": "^4.14.6",
     "vue": "latest",
     "vue-router": "latest",
     "yup": "^1.4.0"

@@ -5,6 +5,7 @@ query GetUsers {
     email
     role
     avatar
+    creationAt
   }
 }
 
