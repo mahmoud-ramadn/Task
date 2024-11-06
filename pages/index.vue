@@ -5,24 +5,25 @@
 
     <div class="w-full h-80 mt-8 space-y-8 px-5">
       <!-- Search and Filters -->
-      <div class="flex justify-between items-start">
+      <div class="flex md:justify-between flex-wrap gap-y-4 items-start">
         <el-input
           v-model="inp"
-          style="width: 400px; height: 44px"
+          class="h-11"
           placeholder="Type something"
           :prefix-icon="Search"
+          style="width: 400px"
         />
-        <div class="space-x-5">
+        <div class="md:space-x-5 w-full flex items-center sm:w-auto">
           <el-date-picker
             v-model="date"
             type="date"
-            style="width: 236px; height: 40px"
+            class="w-full sm:w-[236px] h-10"
             placeholder="Pick a Date"
             format="YYYY/MM/DD"
           />
           <el-button
             style="background: none; width: 101px; height: 40px"
-            class="text-[#344054] font-medium"
+            class="text-[#344054] font-medium ml-5"
             :icon="Operation"
             >Filters</el-button
           >
@@ -30,7 +31,7 @@
       </div>
 
       <!-- Table Section -->
-      <div class="w-[1122px] border-[1px] rounded-md h-[668px] rounded-md">
+      <div class="overflow-x-auto border-[1px] h-auto rounded-md">
         <!-- Header -->
         <div class="flex justify-between h-[56px] items-center p-3">
           <h1 class="font-medium text-xl leading-7">All users</h1>
@@ -43,13 +44,13 @@
         <!-- Table Body -->
         <el-table :data="paginatedData" style="width: 100%">
           <!-- Avatar and Checkbox -->
-          <el-table-column label="Avatar" width="180">
+          <el-table-column label="Avatar" :width="isMobile ? 100 : 180">
             <template #default="{ row }">
               <div class="flex items-center gap-4">
                 <input type="checkbox" />
                 <el-avatar
                   :src="row.avatar"
-                  :size="50"
+                  :size="isMobile ? 30 : 50"
                   class="cursor-pointer"
                   :to="`/userprofile/${row.id}`"
                   @click="navigateToProfile(row.id)"
@@ -59,22 +60,56 @@
           </el-table-column>
 
           <!-- Other Data Columns -->
-          <el-table-column prop="name" label="Name" width="180" />
-          <el-table-column prop="email" label="Email" width="200" />
-          <el-table-column prop="username" label="Username" width="180">
-            mr13155Adfagd
+          <el-table-column
+            prop="name"
+            label="Name"
+            :width="isMobile ? 120 : 180"
+          />
+          <el-table-column
+            prop="email"
+            label="Email"
+            :width="isMobile ? 150 : 200"
+          />
+          <el-table-column
+            prop="username"
+            label="Username"
+            :width="isMobile ? 100 : 180"
+            >@mr57325</el-table-column
+          >
+          <el-table-column
+            v-if="!isMobile"
+            prop="phone"
+            label="Mobile Number"
+            :width="isMobile ? 120 : 180"
+          >
+            <span>46269429</span>
           </el-table-column>
-          <el-table-column prop="phone" label="Mobile Number" width="180">
-            23724987498 </el-table-column
-          >>
-          <el-table-column prop="address" label="Region">
+          <el-table-column
+            v-if="!isMobile"
+            prop="address"
+            label="Region"
+            :width="isMobile ? 120 : 180"
+          >
             <template #default="{ row }">
               <span>Egypt</span>
             </template>
           </el-table-column>
-          <el-table-column prop="creationAt" label="Created at">
+
+          <el-table-column
+            prop="creationAt"
+            label="Created at"
+            :width="isMobile ? 100 : 180"
+          >
             <template #default="{ row }">
               <span>{{ row.creationAt.substring(0, 7) }}</span>
+            </template>
+          </el-table-column>
+
+          <el-table-column>
+            <template #default="{ row }">
+              <span>
+                <Icon name="gridicons:block" class="w-5 h-5 text-[#B71A2A]" />
+              </span>
             </template>
           </el-table-column>
         </el-table>
@@ -83,7 +118,7 @@
         <div class="flex justify-center py-5">
           <el-pagination
             background
-            layout="prev, pager, next"
+            layout="pager"
             :total="totalItems"
             :page-size="pageSize"
             @current-change="handlePageChange"
@@ -95,7 +130,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { Operation, Search } from "@element-plus/icons-vue";
 
@@ -129,4 +164,28 @@ const router = useRouter();
 const navigateToProfile = (id) => {
   router.push(`/userprofile/${id}`);
 };
+
+// Check if the screen size is mobile
+const isMobile = ref(false);
+
+const handleResize = () => {
+  isMobile.value = window.innerWidth <= 768; // Mobile screen threshold
+};
+
+onMounted(() => {
+  handleResize(); // Initial check
+  window.addEventListener("resize", handleResize); // Update on resize
+});
 </script>
+
+<style scoped>
+.container {
+  max-width: 1200px;
+}
+
+@media (max-width: 768px) {
+  .el-table {
+    font-size: 12px; /* Optional: Reduce font size for mobile */
+  }
+}
+</style>

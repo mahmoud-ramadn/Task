@@ -1,14 +1,16 @@
 <template>
-  <div class="bg-[#FEF7F7] h-72 pt-3">
-    <div class="container mx-auto space-y-9 px-5">
-      <div class="flex justify-between items-end">
+  <div class="bg-[#FEF7F7] md:h-72 h-80 pl-4 pt-3">
+    <div class="container mx-auto space-y-9 md:px-5">
+      <div class="flex justify-between md:items-end">
         <div>
           <h1 class="font-semibold text-3xl leading-10">Users</h1>
-          <span class="text-[#475467] text-[16px] flex items-center gap-1"
+          <span
+            class="text-[#475467] md:text-[16px] text-xs flex items-center gap-1"
             >Users <Icon name="fe:arrow-left" /> user profile</span
           >
         </div>
-        <div class="space-x-4">
+
+        <div class="flex flex-wrap md:flex-row flex-col gap-2 items-center">
           <el-button
             style="
               background-color: #ef3e2c;
@@ -21,12 +23,21 @@
             <Icon name="gg:unblock" class="mr-1 w-5 h-5" />
             Unblock
           </el-button>
-          <el-button style="width: 113px; height: 40px; color: #344054">
-            <Icon name="icon-park-outline:delete" class="w-5 h-5 mr-2" />
+
+          <el-button
+            style="
+              width: 113px;
+              height: 40px;
+              color: #344054;
+              margin-right: 10px;
+            "
+          >
+            <Icon name="icon-park-outline:delete" class="w-5 h-5" />
             Delete
           </el-button>
         </div>
       </div>
+
       <div class="flex items-center gap-x-5">
         <img
           :src="data.user.avatar"
@@ -77,7 +88,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { Search, Edit } from "@element-plus/icons-vue";
+import { Edit } from "@element-plus/icons-vue";
 const id = useRoute().params.id;
 
 const { data } = await useAsyncGql({

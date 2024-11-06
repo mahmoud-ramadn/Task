@@ -2,7 +2,6 @@
   <div class="space-y-9">
     <h1 class="font-bold text-xl leading-6">Sign Up for an Account</h1>
     <el-form ref="signupForm" label-position="top" class="flex flex-col gap-9">
-      <!-- Username Field -->
       <el-form-item :error="errors.name">
         <Field name="name" v-slot="{ field }">
           <el-input
@@ -16,7 +15,6 @@
         </Field>
       </el-form-item>
 
-      <!-- Email Field -->
       <el-form-item :error="errors.email">
         <Field name="email" v-slot="{ field }">
           <el-input
@@ -30,7 +28,6 @@
         </Field>
       </el-form-item>
 
-      <!-- Password Field -->
       <el-form-item :error="errors.password">
         <Field name="password" v-slot="{ field }">
           <el-input
@@ -72,7 +69,6 @@ import * as yup from "yup";
 import { useForm, Field, useField } from "vee-validate";
 import { Message, User, Lock } from "@element-plus/icons-vue";
 
-// Define validation schema using Yup
 const schema = yup.object({
   name: yup.string().required("Username is required"),
   email: yup
@@ -85,17 +81,14 @@ const schema = yup.object({
     .required("Password is required"),
 });
 
-// Initialize form with VeeValidate's useForm hook
 const { handleSubmit, errors } = useForm({
   validationSchema: schema,
 });
 
-// Form submission handler
 const submitForm = handleSubmit((values) => {
   if (values) {
     console.log("Form Data:", values);
     navigateTo("/");
   }
-  // This will log the form data if valid
 });
 </script>

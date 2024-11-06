@@ -5,7 +5,9 @@
       <h5 class="text-[16px] font-normal text-[#475467]">Users</h5>
     </div>
 
-    <div class="space-x-3">
+    <div
+      class="space-y-3 flex flex-wrap w-64 md:w-full gap-2 justify-end items-end"
+    >
       <el-button
         class="shadow-md"
         style="color: #344054; width: 122px; height: 40px"

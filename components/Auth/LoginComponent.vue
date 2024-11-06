@@ -5,7 +5,6 @@
       Welcome back! Please enter your details.
     </p>
     <el-form @submit.prevent="handleLogin" class="flex flex-col gap-9">
-      <!-- Email Field with Validation -->
       <el-form-item prop="email" :error="errors.email ? errors.email : ''">
         <Field name="email" v-slot="{ field }">
           <el-input
@@ -19,7 +18,6 @@
         </Field>
       </el-form-item>
 
-      <!-- Password Field with Validation -->
       <el-form-item
         prop="password"
         :error="errors.password ? errors.password : ''"
@@ -63,7 +61,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
 import { useForm, Field, Form as VForm } from "vee-validate";
 import * as yup from "yup";
 import { Message, Lock } from "@element-plus/icons-vue";
@@ -79,13 +76,11 @@ const schema = yup.object({
     .required("Password is required"),
 });
 
-// Set up the form with VeeValidate's useForm, applying the schema
 const { handleSubmit, errors } = useForm({
   validationSchema: schema,
 });
 
-// Define a handler for form submission
 const handleLogin = handleSubmit((values) => {
-  console.log("Form Data:", values); // This will log the form data if valid
+  console.log("Form Data:", values);
 });
 </script>
