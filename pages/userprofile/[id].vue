@@ -1,84 +1,88 @@
 <template>
-  <div class="bg-[#FEF7F7] md:h-72 h-80 pl-4 pt-3">
-    <div class="container mx-auto space-y-9 md:px-5">
-      <div class="flex justify-between md:items-end">
+  <div class="bg-[#FEF7F7] md:h-72 h-80 p-4">
+    <div class="container mx-auto space-y-6 md:px-5">
+      <div
+        class="flex md:flex-row justify-between md:items-end space-y-2 md:space-y-0"
+      >
         <div>
-          <h1 class="font-semibold text-3xl leading-10">Users</h1>
-          <span
-            class="text-[#475467] md:text-[16px] text-xs flex items-center gap-1"
-            >Users <Icon name="fe:arrow-left" /> user profile</span
+          <h1
+            class="font-semibold text-2xl md:text-3xl leading-8 md:leading-10"
           >
+            Users
+          </h1>
+          <span
+            class="text-[#475467] md:text-[16px] text-[10px] flex items-center gap-1"
+          >
+            Users <Icon name="fe:arrow-left" /> user profile
+          </span>
         </div>
 
-        <div class="flex flex-wrap md:flex-row flex-col gap-2 items-center">
+        <div class="flex justify-end flex-wrap md:flex-row gap-2 items-center">
           <el-button
-            style="
-              background-color: #ef3e2c;
-              width: 113px;
-              height: 40px;
-              color: white;
-              background: linear-gradient(to right, #ef3e2c, #e71f63);
-            "
+            class="w-[113px] h-[40px] text-white bg-gradient-to-r from-[#ef3e2c] to-[#e71f63]"
           >
-            <Icon name="gg:unblock" class="mr-1 w-5 h-5" />
+            <Icon name="gg:unblock" class="mr-1 w-4 h-4 md:w-5 md:h-5" />
             Unblock
           </el-button>
 
-          <el-button
-            style="
-              width: 113px;
-              height: 40px;
-              color: #344054;
-              margin-right: 10px;
-            "
-          >
-            <Icon name="icon-park-outline:delete" class="w-5 h-5" />
+          <el-button class="w-[113px] h-[40px] text-[#344054]">
+            <Icon
+              name="icon-park-outline:delete"
+              class="mr-1 w-4 h-4 md:w-5 md:h-5"
+            />
             Delete
           </el-button>
         </div>
       </div>
 
-      <div class="flex items-center gap-x-5">
+      <div class="flex items-center gap-3 md:gap-5">
         <img
           :src="data.user.avatar"
-          class="h-[101px] w-[101px] bg-yellow-200 object-contain rounded-full"
+          class="h-16 w-16 md:h-[101px] md:w-[101px] bg-yellow-200 object-cover rounded-full"
         />
-        <div>
+        <div class="text-sm md:text-base">
           <p>{{ data.user.name }}</p>
           <p>U123456781</p>
         </div>
       </div>
-      <button class="h-10 border-b-[1px] border-red-600 text-[#E71F63]">
+      <button
+        class="h-10 border-b-2 border-red-600 text-[#E71F63] text-sm md:text-base"
+      >
         Account
       </button>
     </div>
   </div>
+
   <div
-    class="container mx-auto flex items-start md:justify-between flex-wrap gap-y-3 pt-8"
+    class="container mx-auto flex flex-col md:flex-row items-start gap-y-6 md:gap-y-0 md:justify-between pt-8"
   >
-    <div class="w-[996px] h-[311px] bg-white rounded-md shadow-md p-8">
-      <h1 class="text-[#101828] text-xl font-semibold leading-6">
+    <div class="w-full md:w-[996px] bg-white rounded-md shadow-md p-6 md:p-8">
+      <h1 class="text-[#101828] text-lg md:text-xl font-semibold leading-6">
         Account info
       </h1>
 
-      <div class="h-[191px] flex flex-col gap-y-3 mt-3">
+      <div class="flex flex-col gap-y-4 mt-3">
         <div>
-          <h1 class="text-[16px] font-medium leading-6 text-[#101828]">Name</h1>
-          <p class="font-normal leading-7 text-[14px] text-[#858589]">
+          <h1 class="text-[14px] md:text-[16px] font-medium text-[#101828]">
+            Name
+          </h1>
+          <p class="font-normal text-sm md:text-base text-[#858589]">
             {{ data.user.name }}
           </p>
         </div>
         <div class="border-y-[1px] py-3">
-          <h1 class="text-[16px] font-medium leading-6 text-[#101828]">
+          <h1 class="text-[14px] md:text-[16px] font-medium text-[#101828]">
             Email address
           </h1>
-          <p class="font-normal leading-7 text-[14px] text-[#858589]">
+          <p class="font-normal text-sm md:text-base text-[#858589]">
             {{ data.user.email }}
           </p>
         </div>
         <div>
-          <h1 class="text-[16px] font-medium leading-6 text-[#101828]">Role</h1>
-          <p class="font-normal leading-7 text-[14px] text-[#858589]">
+          <h1 class="text-[14px] md:text-[16px] font-medium text-[#101828]">
+            Role
+          </h1>
+          <p class="font-normal text-sm md:text-base text-[#858589]">
             {{ data.user.role }}
           </p>
         </div>
@@ -87,6 +91,7 @@
     <el-button style="width: 86px; height: 40px" :icon="Edit"> Edit </el-button>
   </div>
 </template>
+
 <script setup lang="ts">
 import { Edit } from "@element-plus/icons-vue";
 const id = useRoute().params.id;

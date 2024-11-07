@@ -81,6 +81,13 @@ const { handleSubmit, errors } = useForm({
 });
 
 const handleLogin = handleSubmit((values) => {
-  console.log("Form Data:", values);
+  // const { data, errors } = await useAsyncGql({
+  //   operation: "SignIn",
+  //   variables: {
+  //     email: values.email,
+  //     password: values.passwords,
+  //   },
+  // });
+  // console.log(data.value.login);
 });
 </script>

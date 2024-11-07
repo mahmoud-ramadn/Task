@@ -77,7 +77,7 @@ const schema = yup.object({
     .required("Email is required"),
   password: yup
     .string()
-    .min(6, "Password must be at least 6 characters")
+    .min(8, "Your password is not strong enough. Use at least 8 characters")
     .required("Password is required"),
 });
 
@@ -86,9 +86,16 @@ const { handleSubmit, errors } = useForm({
 });
 
 const submitForm = handleSubmit((values) => {
-  if (values) {
-    console.log("Form Data:", values);
-    navigateTo("/");
-  }
+  // if (values) {
+  //   console.log("Form Data:", values);
+  //   const { data, errors } = await useAsyncGql({
+  //     operation: "SignUp",
+  //     variables: {
+  //       name: values.name,
+  //       email: values.email,
+  //     },
+  //   });
+  //   console.log(data.value.addUser.name);
+  // }
 });
 </script>

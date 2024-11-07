@@ -17,7 +17,7 @@
           <el-date-picker
             v-model="date"
             type="date"
-            class="w-full sm:w-[236px] h-10"
+            class="w-full sm:w-[236px] h-11"
             placeholder="Pick a Date"
             format="YYYY/MM/DD"
           />
@@ -156,12 +156,12 @@ const paginatedData = computed(() =>
     : []
 );
 
-const handlePageChange = (page) => {
+const handlePageChange = (page: number) => {
   currentPage.value = page;
 };
 
 const router = useRouter();
-const navigateToProfile = (id) => {
+const navigateToProfile = (id: string) => {
   router.push(`/userprofile/${id}`);
 };
 
