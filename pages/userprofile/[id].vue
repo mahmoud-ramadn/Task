@@ -17,15 +17,21 @@
           </span>
         </div>
 
-        <div class="flex justify-end flex-wrap md:flex-row gap-2 items-center">
+        <div
+          class="flex justify-end md:h-10 flex-wrap md:flex-row gap-2 items-center"
+        >
           <el-button
-            class="w-[113px] h-[40px] text-white bg-gradient-to-r from-[#ef3e2c] to-[#e71f63]"
+            style="height: 40px; color: white"
+            class="w-[113px] bg-gradient-to-r from-[#ef3e2c] to-[#e71f63]"
           >
             <Icon name="gg:unblock" class="mr-1 w-4 h-4 md:w-5 md:h-5" />
             Unblock
           </el-button>
 
-          <el-button class="w-[113px] h-[40px] text-[#344054]">
+          <el-button
+            style="height: 40px; color: #344054"
+            class="w-[113px] text-[#344054]"
+          >
             <Icon
               name="icon-park-outline:delete"
               class="mr-1 w-4 h-4 md:w-5 md:h-5"

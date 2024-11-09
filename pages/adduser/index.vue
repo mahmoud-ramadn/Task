@@ -46,7 +46,7 @@
               color: white;
               background: linear-gradient(to right, #ef3e2c, #e71f63);
             "
-            @click="submitForm"
+            @click="submitForm(formData)"
           >
             Add
           </el-button>
@@ -67,55 +67,64 @@
             <div class="font-semibold leading-5 text-[14px] md:w-[280px]">
               <h1>Name</h1>
             </div>
-            <div class="w-full md:w-[514px] flex flex-col md:flex-row gap-4">
+            <div
+              class="w-full md:w-[514px] flex md:justify-between flex-col md:flex-row gap-y-6 md:gap-4"
+            >
               <input
-                class="w-full md:w-[244px] h-[44px] border-[1px] rounded-md px-2"
-                v-model="firstName"
+                v-model="formData.firstName"
                 placeholder="First name"
+                class="w-full md:w-[244px] h-8 border-[1px] placeholder:text-sm rounded-md px-2"
               />
               <input
-                class="w-full md:w-[244px] h-[44px] border-[1px] rounded-md px-2"
-                v-model="lastName"
+                v-model="formData.lastName"
                 placeholder="Last name"
+                class="w-full md:w-[244px] h-8 border-[1px] outline-[1px] placeholder:text-sm rounded-md px-2"
               />
             </div>
           </div>
 
+          <!-- Email Field -->
           <div class="flex flex-col md:flex-row md:gap-8">
             <div class="font-semibold leading-5 text-[14px] md:w-[280px]">
               <h1>Email address</h1>
             </div>
             <div class="w-full md:w-[514px]">
               <el-input
-                v-model="email"
-                class="w-full"
+                v-model="formData.email"
                 type="email"
                 placeholder="Email"
+                class="w-full"
               />
             </div>
           </div>
 
+          <!-- Password Field -->
           <div class="flex flex-col md:flex-row md:gap-8">
             <div class="font-semibold leading-5 text-[14px] md:w-[280px]">
               <h1>Password</h1>
             </div>
             <div class="w-full md:w-[514px]">
               <el-input
-                v-model="password"
-                class="w-full"
+                v-model="formData.password"
                 type="password"
                 show-password
                 placeholder="Password"
+                class="w-full"
               />
             </div>
           </div>
 
+          <!-- Role Select -->
           <div class="flex flex-col md:flex-row md:gap-8">
             <div class="font-semibold leading-5 text-[14px] md:w-[280px]">
               <h1>Role</h1>
             </div>
             <div class="w-full md:w-[514px]">
-              <el-select v-model="role" placeholder="Role" class="w-full">
+              <el-select
+                v-model="formData.role"
+                placeholder="Role"
+                class="w-full"
+              >
                 <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -138,9 +147,9 @@
                 class="w-8 h-8 md:w-16 md:h-16 rounded-full relative overflow-hidden"
               >
                 <img
-                  :src="uploadedImageUrl"
+                  :src="formData.uploadedImageUrl"
                   alt="User photo"
-                  v-if="uploadedImageUrl"
+                  v-if="formData.uploadedImageUrl"
                 />
                 <div
                   v-else
@@ -149,7 +158,7 @@
                   <span>No image</span>
                 </div>
                 <div
-                  v-if="uploadedImageUrl"
+                  v-if="formData.uploadedImageUrl"
                   class="absolute inset-0 top-5 md:top-10 left-5 md:left-10 bg-white rounded-full flex items-center justify-center shadow-sm"
                   @click="removeImage"
                 >
@@ -157,7 +166,6 @@
                 </div>
               </div>
 
-              <!-- Simple file input for image upload -->
               <input
                 type="file"
                 accept="image/*"
@@ -168,81 +176,93 @@
               <button
                 type="button"
                 @click="triggerFileInput"
-                class="w-full md:w-[428px] h-28 border-2 border-gray-300 flex items-center justify-center"
+                class="w-full md:w-[428px] h-28 border-[1px] rounded-md border-gray-300 flex items-center justify-center flex-col gap-y-3"
               >
-                <span>Click or Drop to upload</span>
+                <div
+                  class="w-10 h-10 bg-[#F9FAFB] flex items-center justify-center rounded-full"
+                >
+                  <Icon name="simple-line-icons:cloud-upload" class="w-5 h-5" />
+                </div>
+                <span class="text-[14px] font-normal text-[#475467]">
+                  <span class="text-[#6941C6] font-semibold"
+                    >Click to upload</span
+                  >
+                  or drag and drop
+                </span>
               </button>
             </div>
           </div>
         </form>
+      </div>
+
+      <div class="w-full flex justify-end gap-2 flex-wrap">
+        <el-button
+          style="
+            background-color: white;
+            width: 80px;
+            height: 40px;
+            color: black;
+          "
+          >Reset</el-button
+        >
+        <el-button
+          style="
+            width: 80px;
+            height: 40px;
+            color: white;
+            background: linear-gradient(to right, #ef3e2c, #e71f63);
+          "
+          @click="submitForm(formData)"
+          >Add</el-button
+        >
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Avatar } from "@element-plus/icons-vue";
-import { ref } from "vue";
+const formData = reactive({
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+  role: "customer",
+  uploadedImageUrl: "",
+});
 
-// Form data
-const firstName = ref("");
-const lastName = ref("");
-const email = ref("");
-const password = ref("");
-const role = ref("");
-const uploadedImageUrl = ref<string | null>(null);
-
-// Role options
 const options = [
-  { value: "admin", label: "Admin" },
-  { value: "customer", label: "User" },
+  { value: "admin", label: "admin" },
+  { value: "customer", label: "customer" },
 ];
 
-// Image file change handler
+const fileInput = ref(null);
+
 const handleFileChange = (event: Event) => {
   const file = (event.target as HTMLInputElement).files?.[0];
   if (file) {
-    uploadedImageUrl.value = URL.createObjectURL(file);
+    formData.uploadedImageUrl = URL.createObjectURL(file);
   }
 };
 
-// Trigger the file input
 const triggerFileInput = () => {
-  const fileInput = document.querySelector(
-    'input[type="file"]'
-  ) as HTMLInputElement;
-  fileInput.click();
+  fileInput.value?.click();
 };
 
-// Remove uploaded image
 const removeImage = () => {
-  uploadedImageUrl.value = null;
+  formData.uploadedImageUrl = "";
 };
-const CreationError = ref(null);
 
-const formData = ref({
-  firstName: firstName.value,
-  lastName: lastName.value,
-  email: email.value,
-  password: password.value,
-  role: role.value,
-  uploadedImageUrl: uploadedImageUrl.value,
-});
-// Form submit handler
 const submitForm = async (values: any) => {
-  CreationError.value = null;
-
-  // const { data, error } = await useAsyncGql({
-  //   operation: "SignUp",
-  //   variables: {
-  //     name: firstName.value,
-  //     email: email.value,
-  //     password: password.value,
-  //     avatar: uploadedImageUrl.value,
-  //   },
-  // });
-
-  console.log("Form Data:", formData);
+  const { data } = await useAsyncGql({
+    operation: "CreateUser",
+    variables: {
+      name: `${formData.firstName}${formData.lastName}`,
+      email: formData.email,
+      password: formData.password,
+      avatar:
+        "https://thumbs.dreamstime.com/b/u-r-letter-logo-abstract-design-white-color-background-ur-monogram-211841045.jpg",
+    },
+  });
 };
 </script>
 

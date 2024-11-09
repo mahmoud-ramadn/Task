@@ -9,6 +9,7 @@
         <Field name="email" v-slot="{ field }">
           <el-input
             v-bind="field"
+            v-model="formData.email"
             style="width: 404px; height: 56px"
             size="large"
             type="email"
@@ -25,6 +26,7 @@
         <Field name="password" v-slot="{ field }">
           <el-input
             v-bind="field"
+            v-model="formData.password"
             style="width: 404px; height: 56px"
             size="large"
             type="password"
@@ -61,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-import { useForm, Field, Form as VForm } from "vee-validate";
+import { useForm, Field, Form as VForm, validate } from "vee-validate";
 import * as yup from "yup";
 import { Message, Lock } from "@element-plus/icons-vue";
 
@@ -76,18 +78,28 @@ const schema = yup.object({
     .required("Password is required"),
 });
 
+const formData = reactive({
+  email: "",
+  password: "",
+});
 const { handleSubmit, errors } = useForm({
   validationSchema: schema,
 });
 
-const handleLogin = handleSubmit((values) => {
-  // const { data, errors } = await useAsyncGql({
-  //   operation: "SignIn",
-  //   variables: {
-  //     email: values.email,
-  //     password: values.passwords,
-  //   },
-  // });
-  // console.log(data.value.login);
+const handleLogin = handleSubmit(async (values) => {
+  try {
+    const { data } = await useAsyncGql({
+      operation: "SignIN",
+      variables: {
+        email: formData.email,
+        password: formData.password,
+      },
+    });
+    console.log(data.value.login.access_token);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    navigateTo("/");
+  }
 });
 </script>

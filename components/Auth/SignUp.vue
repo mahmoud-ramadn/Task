@@ -6,6 +6,7 @@
         <Field name="name" v-slot="{ field }">
           <el-input
             v-bind="field"
+            v-model="formData.name"
             style="width: 404px; height: 56px"
             size="large"
             type="text"
@@ -19,6 +20,7 @@
         <Field name="email" v-slot="{ field }">
           <el-input
             v-bind="field"
+            v-model="formData.email"
             style="width: 404px; height: 56px"
             size="large"
             type="email"
@@ -32,6 +34,7 @@
         <Field name="password" v-slot="{ field }">
           <el-input
             v-bind="field"
+            v-model="formData.password"
             style="width: 404px; height: 56px"
             size="large"
             type="password"
@@ -57,7 +60,7 @@
           color: white;
           background: linear-gradient(to right, #ef3e2c, #e71f63);
         "
-        @click="submitForm"
+        @click="handelSignup"
       >
         Sign Up
       </el-button>
@@ -85,17 +88,28 @@ const { handleSubmit, errors } = useForm({
   validationSchema: schema,
 });
 
-const submitForm = handleSubmit((values) => {
-  // if (values) {
-  //   console.log("Form Data:", values);
-  //   const { data, errors } = await useAsyncGql({
-  //     operation: "SignUp",
-  //     variables: {
-  //       name: values.name,
-  //       email: values.email,
-  //     },
-  //   });
-  //   console.log(data.value.addUser.name);
-  // }
+const formData = reactive({
+  name: "",
+  email: "",
+  password: "",
+});
+
+const handelSignup = handleSubmit(async (values: any) => {
+  try {
+    const { data } = await useAsyncGql({
+      operation: "CreateUser",
+      variables: {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        avatar:
+          "https://thumbs.dreamstime.com/b/u-r-letter-logo-abstract-design-white-color-background-ur-monogram-211841045.jpg",
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  } finally {
+    navigateTo("/");
+  }
 });
 </script>

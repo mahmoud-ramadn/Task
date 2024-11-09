@@ -107,7 +107,7 @@
 
           <el-table-column>
             <template #default="{ row }">
-              <span>
+              <span @click="confirmDelete(row.id)" class="cursor-pointer">
                 <Icon name="gridicons:block" class="w-5 h-5 text-[#B71A2A]" />
               </span>
             </template>
@@ -132,13 +132,14 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { ElMessageBox, ElMessage } from "element-plus";
 import { Operation, Search } from "@element-plus/icons-vue";
 
 const inp = ref("");
 const date = ref("");
-
 const currentPage = ref(1);
 const pageSize = ref(6);
+
 const { data, errors } = await useAsyncGql({
   operation: "GetUsers",
   options: {
@@ -146,6 +147,48 @@ const { data, errors } = await useAsyncGql({
   },
 });
 
+// Confirm delete user
+const confirmDelete = (id: number) => {
+  ElMessageBox.confirm(
+    "Are you sure you want to delete this user?",
+    "Warning",
+    {
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+      type: "warning",
+    }
+  )
+    .then(() => DeletUser(id))
+    .catch(() => {
+      ElMessage({
+        type: "info",
+        message: "Deletion canceled",
+      });
+    });
+};
+
+// Delete user function
+const DeletUser = async (id: number) => {
+  try {
+    const { data } = await useAsyncGql({
+      operation: "DeleteUser",
+      variables: { id },
+    });
+    console.log("User deleted:", data.value.deleteUser);
+    ElMessage({
+      type: "success",
+      message: "User deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    ElMessage({
+      type: "error",
+      message: "Failed to delete user",
+    });
+  }
+};
+
+// Pagination
 const totalItems = data.value ? data.value.length : 0;
 const paginatedData = computed(() =>
   data.value
@@ -169,12 +212,12 @@ const navigateToProfile = (id: string) => {
 const isMobile = ref(false);
 
 const handleResize = () => {
-  isMobile.value = window.innerWidth <= 768; // Mobile screen threshold
+  isMobile.value = window.innerWidth <= 768;
 };
 
 onMounted(() => {
-  handleResize(); // Initial check
-  window.addEventListener("resize", handleResize); // Update on resize
+  handleResize();
+  window.addEventListener("resize", handleResize);
 });
 </script>
 
@@ -185,7 +228,7 @@ onMounted(() => {
 
 @media (max-width: 768px) {
   .el-table {
-    font-size: 12px; /* Optional: Reduce font size for mobile */
+    font-size: 12px;
   }
 }
 </style>
