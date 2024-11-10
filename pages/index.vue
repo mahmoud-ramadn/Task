@@ -40,6 +40,11 @@
 </template>
 
 <script setup lang="ts">
+useSeoMeta({
+  title: "Auth",
+  description: "SignIn and SignUp page ",
+  keywords: "login,SignUp",
+});
 definePageMeta({
   layout: "login-layout",
 });

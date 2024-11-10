@@ -102,6 +102,11 @@
 import { Edit } from "@element-plus/icons-vue";
 const id = useRoute().params.id;
 
+useSeoMeta({
+  title: "User Profile",
+  description: " this is page for User Profile ",
+  keywords: "User Details",
+});
 const { data } = await useAsyncGql({
   operation: "getUser",
   variables: {

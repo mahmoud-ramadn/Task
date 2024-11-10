@@ -137,11 +137,18 @@
 <script setup lang="ts">
 import { ElMessageBox, ElMessage } from "element-plus";
 import { Operation, Search } from "@element-plus/icons-vue";
+import { useDebounceFn } from "@vueuse/core";
 
 const searchQuery = ref("");
 const date = ref("");
 const currentPage = ref(1);
 const pageSize = ref(6);
+
+useSeoMeta({
+  title: "Dashborad",
+  description: "users Dashborad and Admin ",
+  keywords: "Admin Users",
+});
 
 // Fetch user data
 const { data, refresh } = await useAsyncGql({
@@ -152,6 +159,7 @@ const { data, refresh } = await useAsyncGql({
 });
 
 // Filtered data based on search query
+
 const filteredUsers = computed(() => {
   return data.value.filter((user) =>
     user.email.toLowerCase().includes(searchQuery.value.toLowerCase())
@@ -159,6 +167,7 @@ const filteredUsers = computed(() => {
 });
 
 // Pagination and paginated data with filtered results
+
 const totalItems = computed(() => filteredUsers.value.length);
 const paginatedData = computed(() =>
   filteredUsers.value.slice(
@@ -175,6 +184,7 @@ const handlePageChange = (page: number) => {
 const refrchFuc = () => refresh();
 
 // Confirm delete user
+
 const confirmDelete = (id: number) => {
   ElMessageBox.confirm(
     "Are you sure you want to delete this user?",
@@ -195,6 +205,7 @@ const confirmDelete = (id: number) => {
 };
 
 // Delete user function
+
 const DeletUser = async (id: number) => {
   try {
     const { data, refresh } = await useAsyncGql({

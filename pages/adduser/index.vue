@@ -189,6 +189,12 @@
 </template>
 
 <script setup lang="ts">
+useSeoMeta({
+  title: "Add User",
+  description: " this is page for add user ",
+  keywords: "Add user",
+});
+
 const formData = reactive({
   firstName: "",
   lastName: "",

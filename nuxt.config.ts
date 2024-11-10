@@ -6,6 +6,7 @@ export default defineNuxtConfig({
     "nuxt-graphql-client",
     "@nuxtjs/tailwindcss",
     "@nuxt/icon",
+    "@vueuse/nuxt",
     "@vee-validate/nuxt",
   ],
   veeValidate: {
