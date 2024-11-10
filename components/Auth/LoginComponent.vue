@@ -96,10 +96,14 @@ const handleLogin = handleSubmit(async (values) => {
       },
     });
     console.log(data.value.login.access_token);
+
+    const token = data.value.login.access_token;
+
+    localStorage.setItem("token", token);
+
+    navigateTo("/home");
   } catch (error) {
     console.log(error);
-  } finally {
-    navigateTo("/");
   }
 });
 </script>

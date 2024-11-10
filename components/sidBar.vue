@@ -10,7 +10,7 @@
       <el-menu-item
         class="hover:text-white hover:bg-gradient-to-r md:w-full w-fit space-x-4 from-[#EF3E2C] to-[#E71F63] rounded-md"
       >
-        <NuxtLink :to="'/'" class="flex items-center">
+        <NuxtLink :to="'/home'" class="flex items-center">
           <el-icon><HomeFilled class="w-6 h-6" /></el-icon>
           <span class="font-medium text-[16px] md:block hidden">Home</span>
         </NuxtLink>
@@ -19,7 +19,7 @@
       <el-menu-item
         class="text-white space-x-4 bg-gradient-to-r md:w-full w-fit from-[#EF3E2C] to-[#E71F63] rounded-md"
       >
-        <NuxtLink :to="'/'" class="flex items-center">
+        <NuxtLink :to="'/home'" class="flex items-center">
           <el-icon> <Icon class="text-white" name="fa6-solid:users" /></el-icon>
           <span class="text-white font-medium md:block hidden text-[16px]"
             >users</span
@@ -103,6 +103,7 @@ import {
   Location,
   Setting,
 } from "@element-plus/icons-vue";
+
 const handleOpen = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
 };
@@ -110,8 +111,8 @@ const handleClose = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
 };
 const handleLogout = () => {
-  console.log("logout");
-  navigateTo("/auth");
+  localStorage.removeItem("token");
+  navigateTo("/");
 };
 </script>
 

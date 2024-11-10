@@ -1,128 +1,38 @@
 <template>
-  <div class="container mx-auto">
-    <!-- Header -->
-    <Header />
-
-    <div class="w-full h-80 mt-8 space-y-8 px-5">
-      <!-- Search and Filters -->
-      <div class="flex md:justify-between flex-wrap gap-y-4 items-start">
-        <el-input
-          v-model="inp"
-          class="h-11"
-          placeholder="Type something"
-          :prefix-icon="Search"
-          style="width: 400px"
-        />
-        <div class="md:space-x-5 w-full flex items-center sm:w-auto">
-          <el-date-picker
-            v-model="date"
-            type="date"
-            class="w-full sm:w-[236px] h-11"
-            placeholder="Pick a Date"
-            format="YYYY/MM/DD"
-          />
-          <el-button
-            style="background: none; width: 101px; height: 40px"
-            class="text-[#344054] font-medium ml-5"
-            :icon="Operation"
-            >Filters</el-button
-          >
-        </div>
+  <div class="md:container-lg mx-auto">
+    <div class="grid md:grid-cols-2 grid-cols-1 md:min-h-screen">
+      <div
+        class="col-span-1 flex items-center h-[50vh] md:h-full justify-center shadow-md bg-gradient-to-r from-[#EF3E2c] to-[#E71F63]"
+      >
+        <div
+          class="md:w-[524px] md:h-[524px] w-56 h-56 rounded-full bg-gradient-to-r from-white/5 to-white/0"
+        ></div>
       </div>
 
-      <!-- Table Section -->
-      <div class="overflow-x-auto border-[1px] h-auto rounded-md">
-        <!-- Header -->
-        <div class="flex justify-between h-[56px] items-center p-3">
-          <h1 class="font-medium text-xl leading-7">All users</h1>
-          <Icon
-            name="cil:options"
-            class="w-5 h-5 text-[#98A2B3] cursor-pointer"
-          />
-        </div>
-
-        <!-- Table Body -->
-        <el-table :data="paginatedData" style="width: 100%">
-          <!-- Avatar and Checkbox -->
-          <el-table-column label="Avatar" :width="isMobile ? 100 : 180">
-            <template #default="{ row }">
-              <div class="flex items-center gap-4">
-                <input type="checkbox" />
-                <el-avatar
-                  :src="row.avatar"
-                  :size="isMobile ? 30 : 50"
-                  class="cursor-pointer"
-                  :to="`/userprofile/${row.id}`"
-                  @click="navigateToProfile(row.id)"
-                />
-              </div>
-            </template>
-          </el-table-column>
-
-          <!-- Other Data Columns -->
-          <el-table-column
-            prop="name"
-            label="Name"
-            :width="isMobile ? 120 : 180"
-          />
-          <el-table-column
-            prop="email"
-            label="Email"
-            :width="isMobile ? 150 : 200"
-          />
-          <el-table-column
-            prop="username"
-            label="Username"
-            :width="isMobile ? 100 : 180"
-            >@mr57325</el-table-column
+      <div
+        class="col-span-1 flex flex-col space-y-6 justify-center items-center md:p-0 py-4"
+      >
+        <AuthSignUp v-if="toggelForm" />
+        <AuthLoginComponent v-else />
+        <div>
+          <p
+            v-if="toggelForm"
+            class="text-[14px] font-medium leading-5 text-center w-full"
           >
-          <el-table-column
-            v-if="!isMobile"
-            prop="phone"
-            label="Mobile Number"
-            :width="isMobile ? 120 : 180"
+            Already have an account?
+            <button @click="toggleForm" class="text-[#EF3E2C] cursor-pointer">
+              login
+            </button>
+          </p>
+          <p
+            v-else
+            class="text-[14px] font-medium leading-5 text-center w-full"
           >
-            <span>46269429</span>
-          </el-table-column>
-          <el-table-column
-            v-if="!isMobile"
-            prop="address"
-            label="Region"
-            :width="isMobile ? 120 : 180"
-          >
-            <template #default="{ row }">
-              <span>Egypt</span>
-            </template>
-          </el-table-column>
-
-          <el-table-column
-            prop="creationAt"
-            label="Created at"
-            :width="isMobile ? 100 : 180"
-          >
-            <template #default="{ row }">
-              <span>{{ row.creationAt.substring(0, 7) }}</span>
-            </template>
-          </el-table-column>
-
-          <el-table-column>
-            <template #default="{ row }">
-              <span @click="confirmDelete(row.id)" class="cursor-pointer">
-                <Icon name="gridicons:block" class="w-5 h-5 text-[#B71A2A]" />
-              </span>
-            </template>
-          </el-table-column>
-        </el-table>
-
-        <!-- Table Footer (Pagination) -->
-        <div class="flex justify-center py-5">
-          <el-pagination
-            background
-            layout="pager"
-            :total="totalItems"
-            :page-size="pageSize"
-            @current-change="handlePageChange"
-          />
+            Create an account?
+            <span @click="toggleForm" class="text-[#EF3E2C] cursor-pointer"
+              >signup</span
+            >
+          </p>
         </div>
       </div>
     </div>
@@ -130,105 +40,42 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
-import { useRouter } from "vue-router";
-import { ElMessageBox, ElMessage } from "element-plus";
-import { Operation, Search } from "@element-plus/icons-vue";
-
-const inp = ref("");
-const date = ref("");
-const currentPage = ref(1);
-const pageSize = ref(6);
-
-const { data, errors } = await useAsyncGql({
-  operation: "GetUsers",
-  options: {
-    transform: (data) => data.users,
-  },
+definePageMeta({
+  layout: "login-layout",
 });
 
-// Confirm delete user
-const confirmDelete = (id: number) => {
-  ElMessageBox.confirm(
-    "Are you sure you want to delete this user?",
-    "Warning",
-    {
-      confirmButtonText: "Yes",
-      cancelButtonText: "No",
-      type: "warning",
-    }
-  )
-    .then(() => DeletUser(id))
-    .catch(() => {
-      ElMessage({
-        type: "info",
-        message: "Deletion canceled",
-      });
-    });
+const toggelForm = ref(true);
+
+const toggleForm = () => {
+  toggelForm.value = !toggelForm.value;
 };
-
-// Delete user function
-const DeletUser = async (id: number) => {
-  try {
-    const { data } = await useAsyncGql({
-      operation: "DeleteUser",
-      variables: { id },
-    });
-    console.log("User deleted:", data.value.deleteUser);
-    ElMessage({
-      type: "success",
-      message: "User deleted successfully",
-    });
-  } catch (error) {
-    console.error("Error deleting user:", error);
-    ElMessage({
-      type: "error",
-      message: "Failed to delete user",
-    });
-  }
-};
-
-// Pagination
-const totalItems = data.value ? data.value.length : 0;
-const paginatedData = computed(() =>
-  data.value
-    ? data.value.slice(
-        (currentPage.value - 1) * pageSize.value,
-        currentPage.value * pageSize.value
-      )
-    : []
-);
-
-const handlePageChange = (page: number) => {
-  currentPage.value = page;
-};
-
-const router = useRouter();
-const navigateToProfile = (id: string) => {
-  router.push(`/userprofile/${id}`);
-};
-
-// Check if the screen size is mobile
-const isMobile = ref(false);
-
-const handleResize = () => {
-  isMobile.value = window.innerWidth <= 768;
-};
-
-onMounted(() => {
-  handleResize();
-  window.addEventListener("resize", handleResize);
-});
 </script>
 
 <style scoped>
-.container {
-  max-width: 1200px;
+.custom-checkbox {
+  color: white;
 }
 
-@media (max-width: 768px) {
-  .el-table {
-    font-size: 12px;
-  }
+.custom-checkbox ::v-deep .el-checkbox__input.is-checked .el-checkbox__inner {
+  background-color: red;
+  border-color: red;
+}
+
+.custom-checkbox ::v-deep .el-checkbox__inner {
+  background-color: white;
+  border-color: red;
+}
+
+.custom-checkbox ::v-deep .el-checkbox__input.is-checked + .el-checkbox__label {
+  color: white;
+}
+
+.customhover:hover {
+  border: none;
+  background: radial-gradient(circle, #ef3e2c, #e71f63);
+}
+
+.custom-input ::v-deep .el-input__inner {
+  padding-left: 40px;
 }
 </style>

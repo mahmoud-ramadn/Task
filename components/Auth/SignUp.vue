@@ -67,6 +67,7 @@
     </el-form>
   </div>
 </template>
+
 <script setup lang="ts">
 import * as yup from "yup";
 import { useForm, Field, useField } from "vee-validate";
@@ -106,10 +107,10 @@ const handelSignup = handleSubmit(async (values: any) => {
           "https://thumbs.dreamstime.com/b/u-r-letter-logo-abstract-design-white-color-background-ur-monogram-211841045.jpg",
       },
     });
+
+    console.log(data.value.addUser.email);
   } catch (error) {
     console.log(error);
-  } finally {
-    navigateTo("/");
   }
 });
 </script>

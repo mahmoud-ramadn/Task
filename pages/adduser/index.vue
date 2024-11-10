@@ -29,25 +29,8 @@
         </div>
 
         <div class="w-full md:w-56 flex justify-end gap-2 flex-wrap">
-          <el-button
-            style="
-              background-color: white;
-              width: 80px;
-              height: 40px;
-              color: black;
-            "
-          >
-            Reset
-          </el-button>
-          <el-button
-            style="
-              width: 80px;
-              height: 40px;
-              color: white;
-              background: linear-gradient(to right, #ef3e2c, #e71f63);
-            "
-            @click="submitForm(formData)"
-          >
+          <el-button class="reset-button" @click="resetForm"> Reset </el-button>
+          <el-button class="add-button" @click="submitForm(formData)">
             Add
           </el-button>
         </div>
@@ -73,12 +56,12 @@
               <input
                 v-model="formData.firstName"
                 placeholder="First name"
-                class="w-full md:w-[244px] h-8 border-[1px] placeholder:text-sm rounded-md px-2"
+                class="w-full md:w-[244px] h-8 border-[1px] placeholder:text-sm rounded-[4px]focus:outline-[1px] px-2"
               />
               <input
                 v-model="formData.lastName"
                 placeholder="Last name"
-                class="w-full md:w-[244px] h-8 border-[1px] outline-[1px] placeholder:text-sm rounded-md px-2"
+                class="w-full md:w-[244px] h-8 border-[1px] outline-[1px] placeholder:text-sm rounded-[4px] px-2"
               />
             </div>
           </div>
@@ -196,25 +179,10 @@
       </div>
 
       <div class="w-full flex justify-end gap-2 flex-wrap">
-        <el-button
-          style="
-            background-color: white;
-            width: 80px;
-            height: 40px;
-            color: black;
-          "
-          >Reset</el-button
-        >
-        <el-button
-          style="
-            width: 80px;
-            height: 40px;
-            color: white;
-            background: linear-gradient(to right, #ef3e2c, #e71f63);
-          "
-          @click="submitForm(formData)"
-          >Add</el-button
-        >
+        <el-button class="reset-button" @click="resetForm"> Reset </el-button>
+        <el-button class="add-button" @click="submitForm(formData)">
+          Add
+        </el-button>
       </div>
     </div>
   </div>
@@ -240,7 +208,12 @@ const fileInput = ref(null);
 const handleFileChange = (event: Event) => {
   const file = (event.target as HTMLInputElement).files?.[0];
   if (file) {
-    formData.uploadedImageUrl = URL.createObjectURL(file);
+    const validTypes = ["image/jpeg", "image/png", "image/gif"];
+    if (validTypes.includes(file.type)) {
+      formData.uploadedImageUrl = URL.createObjectURL(file);
+    } else {
+      alert("Please upload a valid image file.");
+    }
   }
 };
 
@@ -252,18 +225,48 @@ const removeImage = () => {
   formData.uploadedImageUrl = "";
 };
 
+const resetForm = () => {
+  formData.firstName = "";
+  formData.lastName = "";
+  formData.email = "";
+  formData.password = "";
+  formData.role = "customer";
+  formData.uploadedImageUrl = "";
+};
+
 const submitForm = async (values: any) => {
+  if (!formData.role) {
+    alert("Please select a role.");
+    return;
+  }
+
   const { data } = await useAsyncGql({
     operation: "CreateUser",
     variables: {
-      name: `${formData.firstName}${formData.lastName}`,
+      name: `${formData.firstName} ${formData.lastName}`,
       email: formData.email,
       password: formData.password,
       avatar:
-        "https://thumbs.dreamstime.com/b/u-r-letter-logo-abstract-design-white-color-background-ur-monogram-211841045.jpg",
+        formData.uploadedImageUrl ||
+        "https://images.pexels.com/photos/28830603/pexels-photo-28830603/free-photo-of-elegant-sunlit-arcaded-corridor-with-doorway.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load",
     },
   });
+  navigateTo("/home");
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.reset-button {
+  background-color: white;
+  width: 80px;
+  height: 40px;
+  color: black;
+}
+
+.add-button {
+  width: 80px;
+  height: 40px;
+  color: white;
+  background: linear-gradient(to right, #ef3e2c, #e71f63);
+}
+</style>
