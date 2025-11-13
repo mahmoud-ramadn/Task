@@ -71,8 +71,6 @@
 <script setup lang="ts">
 import * as yup from "yup";
 import { useForm, Field, useField } from "vee-validate";
-import { Message, User, Lock } from "@element-plus/icons-vue";
-
 const schema = yup.object({
   name: yup.string().required("Username is required"),
   email: yup
@@ -82,8 +80,10 @@ const schema = yup.object({
   password: yup
     .string()
     .min(8, "Your password is not strong enough. Use at least 8 characters")
+    .matches(/^[A-Za-z0-9]+$/, "Password must contain only letters and numbers")
     .required("Password is required"),
 });
+
 
 const { handleSubmit, errors } = useForm({
   validationSchema: schema,
@@ -107,6 +107,10 @@ const handelSignup = handleSubmit(async (values: any) => {
           "https://thumbs.dreamstime.com/b/u-r-letter-logo-abstract-design-white-color-background-ur-monogram-211841045.jpg",
       },
     });
+
+    
+    navigateTo("/home");
+
 
     console.log(data.value.addUser.email);
   } catch (error) {

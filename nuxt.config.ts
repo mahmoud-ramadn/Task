@@ -20,7 +20,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      GQL_HOST: "https://api.escuelajs.co/graphql",
+      GQL_HOST: process.env.GQL_HOST,
     },
   },
   imports: {

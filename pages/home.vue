@@ -135,10 +135,6 @@
 </template>
 
 <script setup lang="ts">
-import { ElMessageBox, ElMessage } from "element-plus";
-import { Operation, Search } from "@element-plus/icons-vue";
-import { useDebounceFn } from "@vueuse/core";
-
 const searchQuery = ref("");
 const date = ref("");
 const currentPage = ref(1);

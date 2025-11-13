@@ -39,7 +39,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup >
 useSeoMeta({
   title: "Auth",
   description: "SignIn and SignUp page ",
