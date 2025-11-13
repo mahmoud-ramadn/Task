@@ -106,6 +106,12 @@ const handelSignup = handleSubmit(async (values: any) => {
         avatar:
           "https://thumbs.dreamstime.com/b/u-r-letter-logo-abstract-design-white-color-background-ur-monogram-211841045.jpg",
       },
+      options: {
+        headers: {
+          "Content-Type": "application/json",
+          "x-apollo-operation-name": "CreateUser",
+        },
+      },
     });
 
     

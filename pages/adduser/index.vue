@@ -247,7 +247,7 @@ const submitForm = async (values: any) => {
     return;
   }
 
-  const { data } = await useAsyncGql({
+  const { data, error } = await useAsyncGql({
     operation: "CreateUser",
     variables: {
       name: `${formData.firstName} ${formData.lastName}`,
@@ -257,9 +257,24 @@ const submitForm = async (values: any) => {
         formData.uploadedImageUrl ||
         "https://images.pexels.com/photos/28830603/pexels-photo-28830603/free-photo-of-elegant-sunlit-arcaded-corridor-with-doorway.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load",
     },
+    options: {
+      headers: {
+        "content-type": "application/json",
+        "x-apollo-operation-name": "CreateUser",
+      },
+    },
   });
+
+  if (error.value) {
+    console.error("GraphQL Error:", error.value);
+    alert("Something went wrong, please try again.");
+    return;
+  }
+
+  console.log("User created:", data.value);
   navigateTo("/home");
 };
+
 </script>
 
 <style scoped>

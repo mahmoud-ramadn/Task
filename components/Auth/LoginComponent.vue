@@ -94,6 +94,12 @@ const handleLogin = handleSubmit(async (values) => {
         email: formData.email,
         password: formData.password,
       },
+      options: {
+        headers: {
+          "Content-Type": "application/json",
+          "x-apollo-operation-name": "SignIN",
+        },
+      },
     });
     console.log(data.value.login.access_token);
 
