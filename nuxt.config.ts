@@ -22,6 +22,20 @@ export default defineNuxtConfig({
     public: {
       GQL_HOST: process.env.GQL_HOST,
     },
+
+    graphql: {
+      clients: {
+        default: {
+          host: "https://api.escuelajs.co/graphql",
+          options: {
+            headers: {
+              "Content-Type": "application/json",
+              "x-apollo-operation-name": "CreateUser",
+            },
+          },
+        },
+      },
+    },
   },
   imports: {
     dirs: ["graphql"],
